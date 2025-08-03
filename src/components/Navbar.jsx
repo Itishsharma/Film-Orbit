@@ -7,6 +7,7 @@ function Navbar() {
       <Link to="/" className="text-xl font-bold text-orange-400">Film Orbit</Link>
       <div className="space-x-4">
         <Link to="/" className="hover:text-orange-400 transition">Home</Link>
+        <Link to="/movies" className="hover:text-orange-400 transition">Movies</Link>
       </div>
     </nav>
   )
