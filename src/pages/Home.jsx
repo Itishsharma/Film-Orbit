@@ -1,33 +1,36 @@
-import React from "react";
-import movies from "../data/dummyMovies"; // ✅ adjust if your path is different
+import { useEffect, useState } from 'react';
+import { fetchPopularMovies } from '../api/tmdb';
 
-function Home() {
+const Home = () => {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    fetchPopularMovies()
+      .then((res) => {
+        setMovies(res.data.results);
+      })
+      .catch((err) => {
+        console.error("Error fetching movies", err);
+      });
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black p-6">
-      <h1 className="text-4xl text-white font-bold mb-6 text-center">Film Orbit 🎬</h1>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div>
+      <h2 className="text-xl font-bold mb-4">Popular Movies</h2>
+      <div className="flex flex-wrap gap-4">
         {movies.map((movie) => (
-          <div
-            key={movie.id}
-            className="rounded-2xl overflow-hidden shadow-lg border border-orange-500/20 p-4 bg-black/50 backdrop-blur-md hover:scale-105 transition-transform duration-300"
-          >
+          <div key={movie.id} className="bg-gray-800 rounded-xl p-2 w-[150px]">
             <img
-              src={movie.image}
-              alt={movie.name}
-              className="w-full h-72 object-cover rounded-xl"
-              onError={(e) =>
-                (e.target.src =
-                  'https://via.placeholder.com/300x450?text=No+Image')
-              }
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              alt={movie.title}
+              className="rounded-md"
             />
-            <h2 className="text-white text-xl font-bold mt-3">{movie.name}</h2>
-            <p className="text-orange-400">{movie.genre}</p>
+            <h3 className="text-white mt-2 text-sm">{movie.title}</h3>
           </div>
         ))}
       </div>
     </div>
   );
-}
+};
 
 export default Home;
