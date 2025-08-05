@@ -15,17 +15,18 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">Popular Movies</h2>
-      <div className="flex flex-wrap gap-4">
+    <div className="flex flex-col items-center px-4">
+      <h2 className="text-2xl font-bold my-6 text-center">Popular Movies</h2>
+      
+      <div className="flex flex-wrap justify-center gap-6 max-w-7xl">
         {movies.map((movie) => (
-          <div key={movie.id} className="bg-gray-800 rounded-xl p-2 w-[150px]">
+          <div key={movie.id} className="bg-gray-800 rounded-xl p-4 w-[200px]">
             <img
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt={movie.title}
-              className="rounded-md"
+              className="rounded-md w-full h-auto"
             />
-            <h3 className="text-white mt-2 text-sm">{movie.title}</h3>
+            <h3 className="text-white mt-3 text-base text-center">{movie.title}</h3>
           </div>
         ))}
       </div>
