@@ -1,16 +1,16 @@
-// src/components/Navbar.jsx
-import { Link } from 'react-router-dom'
+import React from "react";
 
-function Navbar() {
+const Navbar = () => {
   return (
-    <nav className="flex justify-between items-center px-8 py-4 bg-black/60 backdrop-blur border-b border-orange-500/20 shadow-sm">
-      <Link to="/" className="text-xl font-bold text-orange-400">Film Orbit</Link>
-      <div className="space-x-4">
-        <Link to="/" className="hover:text-orange-400 transition">Home</Link>
-        <Link to="/movies" className="hover:text-orange-400 transition">Movies</Link>
-      </div>
+    <nav className="bg-background text-light px-4 py-3 flex items-center justify-between shadow-md">
+      <h1 className="text-2xl font-bold text-accent">Film Orbit</h1>
+      <input
+        type="text"
+        placeholder="Search movies..."
+        className="px-3 py-1 rounded-lg bg-dark text-light border border-hoverAccent"
+      />
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
