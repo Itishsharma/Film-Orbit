@@ -1,15 +1,22 @@
-import React from "react";
+import { Link } from "react-router-dom"
 
 const MovieCard = ({ movie }) => {
   return (
-    <div className="bg-background text-light p-4 rounded-2xl shadow-md hover:shadow-lg transition">
-      <img src={movie.poster} alt={movie.title} className="w-full h-64 object-cover rounded-xl mb-2" />
-      <h2 className="text-xl font-bold">{movie.title}</h2>
-      <p className="text-sm text-gray-400">{movie.genre.join(", ")}</p>
-      <p className="text-sm">Year: {movie.year}</p>
-      <p className="text-sm">Rating: {movie.rating}</p>
-    </div>
-  );
-};
+    <Link to={`/movie/${movie.id}`}>
 
-export default MovieCard;
+      <div className="bg-black rounded-xl overflow-hidden shadow-md hover:scale-105 transition-transform border border-border">
+        <img
+          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          alt={movie.title}
+          className="w-full h-[300px] object-cover"
+        />
+        <div className="p-2">
+          <h2 className="text-lg font-semibold">{movie.title}</h2>
+          <p className="text-sm text-gray-400">{movie.release_date}</p>
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+export default MovieCard
