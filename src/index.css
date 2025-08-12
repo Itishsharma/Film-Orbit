@@ -1,24 +1,10 @@
-@import "tailwindcss/preflight";
-@tailwind utilities;
-@tailwind utilities;
-@reference "tailwindcss";
+@import "tailwindcss";
 
-
-@layer components {
-  .card {
-    @apply rounded-lg p-4 bg-[#0d0d0d] text-[#888888] shadow-glow-orange;
-  }
-
-  .btn-accent {
-    @apply inline-block bg-gradient-to-r from-[#ff6600] to-[#cc5200] text-white py-2 px-4 rounded-lg;
-  }
-
-  @theme {
+@theme {
   --shadow-glow-orange: 0 4px 10px rgba(255, 112, 0, 0.8);
 }
 
+/* Custom utility class */
 .shadow-glow-orange {
   box-shadow: var(--shadow-glow-orange);
-}
-
 }

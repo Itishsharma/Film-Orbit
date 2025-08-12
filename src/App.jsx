@@ -1,31 +1,13 @@
-import { Routes, Route } from "react-router-dom"
-import Home from "./pages/Home"
-import MovieDetails from "./pages/MovieDetails"
-import Navbar from "./components/Navbar"
-import Search from "./pages/Search"
-import Reviews from "./pages/Reviews"
-import Watchlist from "./pages/Watchlist"
-
-
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <Routes>
-        <Routes>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/movie/:id" element={<MovieDetails />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/reviews/:id" element={<Reviews />} />
-            <Route path="/watchlist" element={<Watchlist />} />
-          </Routes>
-
-        </Routes>
-      </Routes>
-    </>
-  )
+    <Routes>
+      <Route path="/" element={<div>Home Page</div>} />
+      <Route path="/about" element={<div>About Page</div>} />
+      <Route path="/contact" element={<div>Contact Page</div>} />
+    </Routes>
+  );
 }
 
-export default App
+export default App;
