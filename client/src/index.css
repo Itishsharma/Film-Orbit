@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .card { @apply bg-panel-dark text-muted rounded-xl2 p-4 shadow-glow-orange; }
+  .btn-accent { @apply inline-block bg-gradient-to-r from-accent to-accent-dark text-white py-2 px-4 rounded-xl2; }
+}
+
+body { @apply bg-dark text-white; }
