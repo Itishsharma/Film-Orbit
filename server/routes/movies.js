@@ -1,9 +1,20 @@
-const router = require('express').Router()
-const { getPopular, search, getDetails, getRandom } = require('../controllers/movieController')
+const express = require('express');
+const axios = require('axios');
+require('dotenv').config();
 
-router.get('/popular', getPopular)
-router.get('/search', search)
-router.get('/random', getRandom)
-router.get('/:id', getDetails)
+const router = express.Router();
 
-module.exports = router
+// Trending Movies Route
+router.get('/trending', async (req, res) => {
+  try {
+    const tmdbRes = await axios.get(
+      `https://api.themoviedb.org/3/trending/movie/week?api_key=${process.env.TMDB_API_KEY}`
+    );
+    res.json(tmdbRes.data);
+  } catch (error) {
+    console.error("TMDB Error:", error.response?.data || error.message);
+    res.status(500).json({ message: "tmdb error" });
+  }
+});
+
+module.exports = router;
