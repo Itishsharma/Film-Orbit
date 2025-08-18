@@ -7,7 +7,7 @@ import HorizontalCard from './HorizontalCard'
 import Loader  from './Loader'
 
 function Home() {
-    document.title = "SCSDB | HomePage"
+    document.title = "Film Orbit"
     const [bgc, setbgc] = useState(null)
     const [Trending, setTrending] = useState(null);
     const [Category, setCategory] = useState("all")

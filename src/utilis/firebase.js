@@ -22,14 +22,14 @@ import { getAuth,GoogleAuthProvider} from "firebase/auth";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBZWllgQzCioYQhK9ZKS_pRrUX_SgTA29w",
-  authDomain: "moive-app-a571a.firebaseapp.com",
-  databaseURL: "https://moive-app-a571a-default-rtdb.firebaseio.com",
-  projectId: "moive-app-a571a",
-  storageBucket: "moive-app-a571a.appspot.com",
-  messagingSenderId: "1045851090942",
-  appId: "1:1045851090942:web:750e04d46462aaa4761aaf",
-  measurementId: "G-93EPGKGF53"
+  apiKey: "AIzaSyCzH43oFhXkrozplJpOUH_YGjLDxmfm_ss",
+  authDomain: "film-orbit.firebaseapp.com",
+  databaseURL: "https://film-orbit-default-rtdb.firebaseio.com/",
+  projectId: "film-orbit",
+  storageBucket: "film-orbit.firebasestorage.app",
+  messagingSenderId: "61965602710",
+  appId: "1:61965602710:web:bb8a7811bd9ba17287d7b7",
+  measurementId: "G-GW08FDX0XD"
 };
 
 // Initialize Firebase
