@@ -50,6 +50,7 @@ function Navbar() {
             {/* <h1 className="text-white font-semibold text-xl mt-5 mb-5">
               New Feeds
             </h1>
+            
             <NavLink
               to="/About"
               className="hover:bg-[#6556cD] hover:text-white p-3 duration-300 rounded-md"
