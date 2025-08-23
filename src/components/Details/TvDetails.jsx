@@ -40,21 +40,6 @@ export default function Movie() {
           className=" text-[2vw] hover:text-[#6556CD] cursor-pointer text-zinc-700 ri-arrow-left-line"
         ></Link>
 
-        <a href={info.detail.homepage} target="_blank">
-        <i class="ri-arrow-right-up-line"></i>
-        </a>
-        <a
-          href={`https://www.wikidata.org/wiki/${info.externalid.wikidata_id}`}
-          target="_blank"
-        >
-          <i className="ri-earth-fill"></i>
-        </a>
-        <a
-          target="_blank"
-          href={`https://www.imdb.com/title/${info.externalid.imbd_id}/`}
-        >
-          <i className="">imdb</i>
-        </a>
       </nav>
 
       <div className="w-full  flex  px-20">
@@ -110,7 +95,7 @@ export default function Movie() {
           </Link>
 
           <Link
-            className=" bg-[#6556CD] py-2  rounded-lg px-4"
+            className=" bg-[#6556CD] py-2  rounded-lg px-4 m-10"
             to={`${pathname}/providers/watch`}
           >
             <i className="text-xl ri-play-fill mr-3"></i>
@@ -119,50 +104,7 @@ export default function Movie() {
         </div>
       </div>
 
-      <div className=" w-[80%] flex flex-col  gap-y-10 mt-5">
-        {info.watchproviders && info.watchproviders.flatrate && (
-          <div className="flex items-center text-white gap-x-5 px-10">
-            <h1>Available on Platform</h1>
-            {info.watchproviders.flatrate.map((w, i) => (
-              <img
-                key={i}
-                className="w-[3vw] ml-5"
-                title={w.provider_name}
-                src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
-                alt="img"
-              />
-            ))}
-          </div>
-        )}
-        {info.watchproviders && info.watchproviders.rent && (
-          <div className="flex items-center text-white gap-x-5 px-10">
-            <h1>Available on Rent</h1>
-            {info.watchproviders.rent.map((w, i) => (
-              <img
-                key={i}
-                title={w.provider_name}
-                className="w-[3vw] ml-5"
-                src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
-                alt="img"
-              />
-            ))}
-          </div>
-        )}
-        {info.watchproviders && info.watchproviders.buy && (
-          <div className="flex items-center text-white gap-x-5 px-10 ">
-            <h1>Available to buy</h1>
-            {info.watchproviders.buy.map((w, i) => (
-              <img
-                key={i}
-                title={w.provider_name}
-                className="w-[3vw] ml-5"
-                src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
-                alt="img"
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      
 
       {/* part-4 */}
       <hr className="mt-10 mb-3 ml-5 mr-5 border-none h-[1px] bg-zinc-500"></hr>

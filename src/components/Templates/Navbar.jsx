@@ -1,73 +1,110 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom"
+
 function Navbar() {
   return (
-    <>
-      <div className="w-[20%] h-full  border-r-2 border-zinc-800 p-5">
-        <h1 className="text-2xl text-white font-bold flex items-center">
-          <img src="/src/assets/svg.svg" alt="TV" className="text-[#6556cD] w-9 h-8.5" />
-          <span className="ml-2">Movies</span>
+    <div className="w-[20%] h-full bg-gradient-to-b from-slate-900/95 to-slate-800/95 backdrop-blur-xl border-r border-slate-700/50 p-6 shadow-2xl">
+      {/* Logo Section */}
+      <div className="mb-8">
+        <h1 className="text-2xl text-white font-bold flex items-center group">
+
+            <div><img src="/src/assets/svg.svg" alt="logo" className="w-9 h-9" />
+          </div>
+          <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Film Orbit</span>
         </h1>
-        <nav className="flex flex-col text-zinc-400 c gap-3">
-          <div className="flex-col flex text-zinc-400">
-            <h1 className="text-white font-semibold text-xl mt-5 mb-5">
-              New Feeds
-            </h1>
+      </div>
+
+      {/* Navigation Section */}
+      <nav className="space-y-2">
+        <div className="mb-6">
+          <h2 className="text-slate-300 font-semibold text-sm uppercase tracking-wider mb-4 px-3">Discover</h2>
+
+          <div className="space-y-1">
             <NavLink
               to="/trending"
-              className="hover:bg-[#6556cD] hover:text-white p-3 duration-300 rounded-md flex items-center"
+              className={({ isActive }) =>
+                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
+                  isActive
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                }`
+              }
             >
-              <i classname="ri-fire-fill  hover:text-orange-500"></i>
-              <h1 className="ml-2 text-[1.3vw]">Trending</h1>
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-r from-orange-500 to-red-500 mr-3 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z" />
+                </svg>
+              </div>
+              <span className="font-medium">Trending</span>
             </NavLink>
+
             <NavLink
               to="/movie"
-              className="hover:bg-[#6556cD] hover:text-white p-3 duration-300 rounded-md flex items-center"
+              className={({ isActive }) =>
+                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
+                  isActive
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                }`
+              }
             >
-              <i classname="ri-movie-2-fill hover:text-white"></i>
-              <h1 className="ml-2 text-[1.3vw]">Movies</h1>
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 mr-3 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z" />
+                </svg>
+              </div>
+              <span className="font-medium">Movies</span>
             </NavLink>
+
             <NavLink
               to="/tvshows"
-              className="hover:bg-[#6556cD] hover:text-white p-3 duration-300 rounded-md flex items-center"
+              className={({ isActive }) =>
+                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
+                  isActive
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                }`
+              }
             >
-              <i classname="ri-fill hover:text-white"></i>
-              <h1 className="ml-2 text-[1.3vw]">Tv Shows</h1>
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-r from-green-500 to-teal-500 mr-3 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM21 19H3V5h18v14zM16 10.5l-6 4.5V6z" />
+                </svg>
+              </div>
+              <span className="font-medium">TV Shows</span>
             </NavLink>
+
             <NavLink
               to="/person"
-              className="hover:bg-[#6556cD] hover:text-white p-3 duration-300 rounded-md flex items-center"
+              className={({ isActive }) =>
+                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
+                  isActive
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                }`
+              }
             >
-              <i classname="ri-heart-2-fill hover:text-red-500"></i>
-              <h1 className="ml-2 text-[1.3vw]">Person</h1>
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-r from-pink-500 to-rose-500 mr-3 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                </svg>
+              </div>
+              <span className="font-medium">People</span>
             </NavLink>
           </div>
-        </nav>
+        </div>
+      </nav>
 
-        <hr className="border-zinc-600 mt-5" />
-        {/* <nav className="flex flex-col text-zinc-400 c gap-3">
-          <div className="flex-col flex text-zinc-400">
-            {/* <h1 className="text-white font-semibold text-xl mt-5 mb-5">
-              New Feeds
-            </h1>
-            
-            <NavLink
-              to="/About"
-              className="hover:bg-[#6556cD] hover:text-white p-3 duration-300 rounded-md"
-            >
-              About
-            </NavLink>
-            <NavLink
-              to={"/Contact"}
-              className="hover:bg-[#6556cD] hover:text-white p-3 duration-300 rounded-md"
-            >
-              Contact
-            </NavLink>
-          </div> 
-        </nav> */}
+      {/* Divider */}
+      <div className="my-6 h-px bg-gradient-to-r from-transparent via-slate-600 to-transparent"></div>
+
+      {/* Footer */}
+      <div className="mt-auto pt-6">
+        <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 rounded-xl p-4 border border-slate-600/30">
+          <p className="text-xs text-slate-400 text-center">Discover amazing movies and TV shows</p>
+        </div>
       </div>
-    </>
-  );
+    </div>
+  )
 }
 
-export default Navbar;
+export default Navbar

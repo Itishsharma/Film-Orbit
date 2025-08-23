@@ -41,21 +41,6 @@ export default function Movie({data}) {
           className=" text-[2vw] hover:text-[#6556CD] cursor-pointer text-zinc-700 ri-arrow-left-line"
         ></Link>
 
-        <a href={info.detail.homepage} target="_blank">
-          <i className="ri-exterl-link-fill"></i>
-        </a>
-        <a
-          href={`https://www.wikidata.org/wiki/${info.externalid.wikidata_id}`}
-          target="_blank"
-        >
-          <i className="ri-earth-fill"></i>
-        </a>
-        <a
-          target="_blank"
-          href={`https://www.imdb.com/title/${info.externalid.imbd_id}/`}
-        >
-          <i className="">imdb</i>
-        </a>
       </nav>
 
       <div className="w-full  flex  px-20">
@@ -120,49 +105,7 @@ export default function Movie({data}) {
 
         </div>
       </div>
-
-      <div className=" w-[80%] flex flex-col  gap-y-10 mt-5">
-        {info.watchproviders && info.watchproviders.flatrate && (
-          <div className="flex items-center text-white gap-x-5 px-10">
-            <h1>Available on Platform</h1>
-            {info.watchproviders.flatrate.map((w, i) => (
-              <img
-                key={i}
-                className="w-[3vw] ml-5"
-                title={w.provider_name}
-                src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
-                alt="img"
-              />
-            ))}
-          </div>
-        )}
-        {info.watchproviders && info.watchproviders.rent && (
-          <div className="flex items-center text-white gap-x-5 px-10">
-            <h1>Available on Rent</h1>
-            {info.watchproviders.rent.map((w) => (
-              <img
-                title={w.provider_name}
-                className="w-[3vw] ml-5"
-                src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
-                alt="img"
-              />
-            ))}
-          </div>
-        )}
-        {info.watchproviders && info.watchproviders.buy && (
-          <div className="flex items-center text-white gap-x-5 px-10 ">
-            <h1>Available to buy</h1>
-            {info.watchproviders.buy.map((w) => (
-              <img
-                title={w.provider_name}
-                className="w-[3vw] ml-5"
-                src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
-                alt="img"
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      
 
       <hr className="mt-10 mb-3 ml-5 mr-5 border-none h-[1px] bg-zinc-500"></hr>
       <h1 className="text-3xl font-bold text-white ml-5">
