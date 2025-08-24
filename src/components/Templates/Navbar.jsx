@@ -1,22 +1,29 @@
+"use client"
 import { NavLink } from "react-router-dom"
 
 function Navbar() {
   return (
-    <div className="w-[20%] h-full bg-gradient-to-b from-slate-900/95 to-slate-800/95 backdrop-blur-xl border-r border-slate-700/50 p-6 shadow-2xl">
+    <div className="w-[20%] h-full bg-gradient-to-b from-black via-gray-900 to-black backdrop-blur-xl border-r border-purple-900/30 p-6 shadow-2xl">
       {/* Logo Section */}
       <div className="mb-8">
         <h1 className="text-2xl text-white font-bold flex items-center group">
-
-            <div><img src="/src/assets/svg.svg" alt="logo" className="w-9 h-9" />
+          <div className="mr-3">
+            <div className="w-9 h-9 bg-gradient-to-r from-purple-600 to-purple-400 rounded-lg flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z" />
+              </svg>
+            </div>
           </div>
-          <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Film Orbit</span>
+          <span className="bg-gradient-to-r from-purple-400 to-purple-200 bg-clip-text text-transparent">
+            Film Orbit
+          </span>
         </h1>
       </div>
 
       {/* Navigation Section */}
       <nav className="space-y-2">
         <div className="mb-6">
-          <h2 className="text-slate-300 font-semibold text-sm uppercase tracking-wider mb-4 px-3">Discover</h2>
+          <h2 className="text-gray-300 font-semibold text-sm uppercase tracking-wider mb-4 px-3">Discover</h2>
 
           <div className="space-y-1">
             <NavLink
@@ -24,8 +31,8 @@ function Navbar() {
               className={({ isActive }) =>
                 `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
                   isActive
-                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25"
-                    : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
+                    : "text-gray-400 hover:text-white hover:bg-gray-900/50"
                 }`
               }
             >
@@ -42,8 +49,8 @@ function Navbar() {
               className={({ isActive }) =>
                 `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
                   isActive
-                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25"
-                    : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
+                    : "text-gray-400 hover:text-white hover:bg-gray-900/50"
                 }`
               }
             >
@@ -60,8 +67,8 @@ function Navbar() {
               className={({ isActive }) =>
                 `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
                   isActive
-                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25"
-                    : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
+                    : "text-gray-400 hover:text-white hover:bg-gray-900/50"
                 }`
               }
             >
@@ -78,8 +85,8 @@ function Navbar() {
               className={({ isActive }) =>
                 `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
                   isActive
-                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/25"
-                    : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
+                    : "text-gray-400 hover:text-white hover:bg-gray-900/50"
                 }`
               }
             >
@@ -95,12 +102,12 @@ function Navbar() {
       </nav>
 
       {/* Divider */}
-      <div className="my-6 h-px bg-gradient-to-r from-transparent via-slate-600 to-transparent"></div>
+      <div className="my-6 h-px bg-gradient-to-r from-transparent via-purple-800 to-transparent"></div>
 
       {/* Footer */}
       <div className="mt-auto pt-6">
-        <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 rounded-xl p-4 border border-slate-600/30">
-          <p className="text-xs text-slate-400 text-center">Discover amazing movies and TV shows</p>
+        <div className="bg-gradient-to-r from-gray-900/50 to-black/50 rounded-xl p-4 border border-purple-900/30">
+          <p className="text-xs text-gray-400 text-center">Discover amazing movies and TV shows</p>
         </div>
       </div>
     </div>
