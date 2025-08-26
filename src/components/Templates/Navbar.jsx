@@ -8,13 +8,11 @@ function Navbar() {
       <div className="mb-8">
         <h1 className="text-2xl text-white font-bold flex items-center group">
           <div className="mr-3">
-            <div className="w-9 h-9 bg-gradient-to-r from-purple-600 to-purple-400 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z" />
-              </svg>
+            <div className="w-9 h-9 flex items-center justify-center">
+              <img src="/src/assets/logo.png" alt="Logo" className="w-9 h-9 object-contain" />
             </div>
           </div>
-          <span className="bg-gradient-to-r from-purple-400 to-purple-200 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-purple-800 to-purple-200 bg-clip-text text-transparent">
             Film Orbit
           </span>
         </h1>
@@ -96,6 +94,24 @@ function Navbar() {
                 </svg>
               </div>
               <span className="font-medium">People</span>
+            </NavLink>
+
+            <NavLink
+              to="/random"
+              className={({ isActive }) =>
+                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
+                  isActive
+                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
+                    : "text-gray-400 hover:text-white hover:bg-gray-900/50"
+                }`
+              }
+            >
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-r from-yellow-500 to-orange-500 mr-3 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM7.5 18c-.83 0-1.5-.67-1.5-1.5S6.67 15 7.5 15s1.5.67 1.5 1.5S8.33 18 7.5 18zm0-9C6.67 9 6 8.33 6 7.5S6.67 6 7.5 6 9 6.67 9 7.5 8.33 9 7.5 9zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm0-9c-.83 0-1.5-.67-1.5-1.5S15.67 6 16.5 6s1.5.67 1.5 1.5S17.33 9 16.5 9z" />
+                </svg>
+              </div>
+              <span className="font-medium">Random</span>
             </NavLink>
           </div>
         </div>
