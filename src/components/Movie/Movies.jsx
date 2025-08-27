@@ -8,7 +8,7 @@ import Card from "../Navbar page/Card"
 import Loader from "../Loader"
 
 function Movie() {
-  document.title = "GR | Movie"
+  document.title = "Movies"
   const navigate = useNavigate()
   const [Category, setCategory] = useState("now_playing")
   const [Movie, setMovie] = useState([])

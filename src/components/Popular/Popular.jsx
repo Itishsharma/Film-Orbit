@@ -8,7 +8,7 @@ import Loader from "../Loader";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 function Popular() {
-  document.title="GR | Popular";
+  document.title="Popular";
   const navigate = useNavigate();
   const [Category, setCategory] = useState("movie");
   const [popular, setPopular] = useState([]);

@@ -7,7 +7,7 @@ import Loader from "../Loader";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 function People() {
-  document.title="GR | people";
+  document.title="People";
   const navigate = useNavigate();
   const [Category, setCategory] = useState("popular");
   const [people, setpeople] = useState([]);

@@ -8,7 +8,7 @@ import Card from "../Navbar page/Card"
 import Loader from "../Loader"
 
 function TVshows() {
-  document.title = "GR | TvShows"
+  document.title = "TvShows"
   const navigate = useNavigate()
   const [Category, setCategory] = useState("airing_today")
   const [TVshows, setTVshows] = useState([])

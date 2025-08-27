@@ -8,7 +8,7 @@ import Card from "./Card"
 import Loader from "../Loader"
 
 function Trending() {
-  document.title = "GR | Popular"
+  document.title = "Popular"
   const navigate = useNavigate()
   const [Category, setCategory] = useState("all")
   const [duration, setduration] = useState("day")
