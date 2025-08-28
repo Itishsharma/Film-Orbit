@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 function Header({data}) {
   return (
+    <div className="relative w-full bg-gradient-to-br from-slate-900 via-purple-900 to-purple-900 p-6">
     <div
     style={{
         background:`linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.2),rgba(0,0,0,.3)),url(https://image.tmdb.org/t/p/original/${ data.backdrop_path || data.profile_path|| data.poster_path})`,
@@ -25,6 +26,7 @@ function Header({data}) {
         </p>
 
         <Link  to={`/${data.media_type}/details/${data.id}/trailer`} className='bg-[#6556CD] rounded-md font-semibold mt-5 p-2'>Watch Trailer</Link>
+    </div>
     </div>
   )
 }

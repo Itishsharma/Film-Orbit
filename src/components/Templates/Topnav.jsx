@@ -52,7 +52,7 @@ function Topnav() {
   const handleAuthAction = () => {
     if (auth.currentUser) {
       auth.signOut()
-     } else {
+    } else {
       window.location.href = "/login"
     }
   }
@@ -70,10 +70,10 @@ function Topnav() {
   }, [])
 
   return (
-    <div className="w-full h-[10vh] bg-gradient-to-r from-black via-gray-900 to-black backdrop-blur-xl border-b border-purple-900/30 shadow-lg">
+    <div className="w-full h-[10vh] bg-gradient-to-r from-black via-gray-900 to-black backdrop-blur-xl border-b border-purple-900/30 shadow-lg relative z-[10000]">
       <div className="flex justify-between items-center h-full px-8">
         {shouldShowSearchbar && (
-          <div className="relative flex-1 max-w-2xl">
+          <div className="relative flex-1 max-w-2xl z-[10001]">
             <div
               className={`relative flex items-center transition-all duration-300 ${isSearchFocused ? "scale-105" : ""}`}
             >
@@ -122,7 +122,13 @@ function Topnav() {
             </div>
 
             {isSearchFocused && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-gray-900/95 backdrop-blur-xl border border-purple-900/50 rounded-2xl shadow-2xl max-h-96 overflow-y-auto z-50">
+              <div
+                className="fixed left-8 right-8 max-w-2xl bg-gray-900/95 backdrop-blur-xl border border-purple-900/50 rounded-2xl shadow-2xl max-h-96 overflow-y-auto z-[10002]"
+                style={{
+                  top: "calc(10vh + 0.5rem)",
+                  maxWidth: "calc(100vw - 4rem)",
+                }}
+              >
                 {query.length === 0 ? (
                   <>
                     <div className="p-4 border-b border-purple-900/30 flex justify-between items-center">
