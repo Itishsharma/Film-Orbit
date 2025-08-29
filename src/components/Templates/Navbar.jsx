@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom"
 
 function Navbar() {
   return (
-    <div className="w-[20%] h-full bg-gradient-to-b from-black via-gray-900 to-black backdrop-blur-xl border-r border-purple-900/30 p-6 shadow-2xl">
+    <div className="w-[20%] h-full bg-gradient-to-br from-slate-900 via-purple-900 to-purple-900 p-6 backdrop-blur-xl shadow-2xl">
       {/* Logo Section */}
       <div className="mb-8">
         <h1 className="text-2xl text-white font-bold flex items-center group">
@@ -12,7 +12,7 @@ function Navbar() {
               <img src="/src/assets/logo.png" alt="Logo" className="w-9 h-9 object-contain" />
             </div>
           </div>
-          <span className="bg-gradient-to-r from-purple-800 to-purple-200 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-purple-200 to-purple-400 bg-clip-text text-transparent">
             Film Orbit
           </span>
         </h1>
@@ -21,16 +21,18 @@ function Navbar() {
       {/* Navigation Section */}
       <nav className="space-y-2">
         <div className="mb-6">
-          <h2 className="text-gray-300 font-semibold text-sm uppercase tracking-wider mb-4 px-3">Discover</h2>
+          <h2 className="text-gray-300 font-semibold text-sm uppercase tracking-[0.2em] mb-4 px-3">
+            Discover
+          </h2>
+
 
           <div className="space-y-1">
             <NavLink
               to="/trending"
               className={({ isActive }) =>
-                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
-                  isActive
-                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
-                    : "text-gray-400 hover:text-white hover:bg-gray-900/50"
+                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${isActive
+                  ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
+                  : "text-gray-300 hover:text-white hover:bg-gray-900/50"
                 }`
               }
             >
@@ -45,10 +47,9 @@ function Navbar() {
             <NavLink
               to="/movie"
               className={({ isActive }) =>
-                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
-                  isActive
-                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
-                    : "text-gray-400 hover:text-white hover:bg-gray-900/50"
+                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${isActive
+                  ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
+                  : "text-gray-300 hover:text-white hover:bg-gray-900/50"
                 }`
               }
             >
@@ -63,10 +64,9 @@ function Navbar() {
             <NavLink
               to="/tvshows"
               className={({ isActive }) =>
-                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
-                  isActive
-                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
-                    : "text-gray-400 hover:text-white hover:bg-gray-900/50"
+                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${isActive
+                  ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
+                  : "text-gray-300 hover:text-white hover:bg-gray-900/50"
                 }`
               }
             >
@@ -81,10 +81,9 @@ function Navbar() {
             <NavLink
               to="/person"
               className={({ isActive }) =>
-                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
-                  isActive
-                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
-                    : "text-gray-400 hover:text-white hover:bg-gray-900/50"
+                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${isActive
+                  ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
+                  : "text-gray-300 hover:text-white hover:bg-gray-900/50"
                 }`
               }
             >
@@ -99,10 +98,9 @@ function Navbar() {
             <NavLink
               to="/random"
               className={({ isActive }) =>
-                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${
-                  isActive
-                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
-                    : "text-gray-400 hover:text-white hover:bg-gray-900/50"
+                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${isActive
+                  ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
+                  : "text-gray-300 hover:text-white hover:bg-gray-900/50"
                 }`
               }
             >
@@ -112,6 +110,23 @@ function Navbar() {
                 </svg>
               </div>
               <span className="font-medium">Random</span>
+            </NavLink>
+
+             <NavLink
+              to="/mustwatch"
+              className={({ isActive }) =>
+                `group flex items-center px-3 py-3 rounded-xl transition-all duration-300 ${isActive
+                  ? "bg-gradient-to-r from-purple-600 to-purple-500 text-white shadow-lg shadow-purple-500/25"
+                  : "text-gray-300 hover:text-white hover:bg-gray-900/50"
+                }`
+              }
+            >
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-r from-purple-700 to-blue-600 mr-3 group-hover:scale-110 transition-transform duration-300">
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM7.5 18c-.83 0-1.5-.67-1.5-1.5S6.67 15 7.5 15s1.5.67 1.5 1.5S8.33 18 7.5 18zm0-9C6.67 9 6 8.33 6 7.5S6.67 6 7.5 6 9 6.67 9 7.5 8.33 9 7.5 9zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm0-9c-.83 0-1.5-.67-1.5-1.5S15.67 6 16.5 6s1.5.67 1.5 1.5S17.33 9 16.5 9z" />
+                </svg>
+              </div>
+              <span className="font-medium">Must-Watch Vault</span>
             </NavLink>
           </div>
         </div>
@@ -123,7 +138,10 @@ function Navbar() {
       {/* Footer */}
       <div className="mt-auto pt-6">
         <div className="bg-gradient-to-r from-gray-900/50 to-black/50 rounded-xl p-4 border border-purple-900/30">
-          <p className="text-xs text-gray-400 text-center">Discover amazing movies and TV shows</p>
+          <p className="text-sm text-gray-300 text-center font-[Orbitron] tracking-wider">
+            A Universe of Movies and Shows at your Fingertips
+          </p>
+
         </div>
       </div>
     </div>

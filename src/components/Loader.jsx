@@ -1,13 +1,7 @@
 function Loader() {
   return (
     <div className="flex flex-col justify-center items-center w-full h-screen bg-black relative overflow-hidden">
-      {/* Close button */}
-      <button className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M18 6L6 18M6 6l12 12" />
-        </svg>
-      </button>
-
+      
       <div className="relative">
         <div className="relative w-40 h-40 flex items-center justify-center">
           {/* OUTERMOST (faintest, slowest) */}

@@ -15,6 +15,7 @@ import Login from "../components/LogIn/Login"
 import Signup from "../components/Signup/Signup"
 import WatchLive from "../components/WatchLive"
 import RandomGenerator from "../components/Random/RandomGenerator"
+import MustWatch from "../components/MustWatch/MustWatch"
 function Link() {
   return (
     <div className=" bg-zinc-800  w-screen h-screen flex">
@@ -39,6 +40,7 @@ function Link() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/random" element={<RandomGenerator />} />
+        <Route path="/mustwatch" element={<MustWatch />} />
       </Routes>
     </div>
   )

@@ -70,7 +70,7 @@ function Topnav() {
   }, [])
 
   return (
-    <div className="w-full h-[10vh] bg-gradient-to-r from-black via-gray-900 to-black backdrop-blur-xl border-b border-purple-900/30 shadow-lg relative z-[10000]">
+    <div className="w-full h-[10vh] bg-gradient-to-br from-purple-900 via-purple-900 to-purple-900 p-6 backdrop-blur-xl relative z-[10000]">
       <div className="flex justify-between items-center h-full px-8">
         {shouldShowSearchbar && (
           <div className="relative flex-1 max-w-2xl z-[10001]">
