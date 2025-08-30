@@ -55,6 +55,7 @@ function toUnifiedMovie(item) {
     poster_path: item.poster_path ?? null,
     vote_average: item.vote_average ?? 0,
     vote_count: item.vote_count ?? 0,
+    overview: item.overview ?? "",
   }
 }
 
@@ -67,6 +68,7 @@ function toUnifiedTV(item) {
     poster_path: item.poster_path ?? null,
     vote_average: item.vote_average ?? 0,
     vote_count: item.vote_count ?? 0,
+    overview: item.overview ?? "",
   }
 }
 
@@ -104,41 +106,70 @@ async function getMustWatch(type = "all", limit = 30) {
   return unified.slice(0, limit)
 }
 
-function posterUrl(path, size = "w185") {
-  if (!path) return `/placeholder.svg?height=278&width=185&query=poster`
+function posterUrl(path, size = "w342") {
+  if (!path) return `/placeholder.svg?height=513&width=342&query=poster`
   return `${TMDB_IMAGE_BASE}${size}${path}`
 }
 
-function Rating({ value, count }) {
-  const display = value ? value.toFixed(1) : "–"
+function LoadingSkeleton() {
   return (
-    <div className="flex items-center gap-1 text-sm text-foreground/90">
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
-        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 
-        00.95.69h3.462c.969 0 1.371 1.24.588 
-        1.81l-2.802 2.036a1 1 0 
-        00-.364 1.118l1.07 3.292c.3.921-.755 
-        1.688-1.54 1.118l-2.802-2.036a1 1 0 
-        00-1.176 0l-2.802 2.036c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 
-        1 0 00-.364-1.118L2.88 8.719c-.783-.57-.38-1.81.588-1.81H6.93a1 
-        1 0 00.95-.69l1.07-3.292z" />
-      </svg>
-      <span className="font-medium">{display}</span>
-      <span className="text-muted-foreground">({Intl.NumberFormat().format(count)})</span>
+    <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+      {Array.from({ length: 12 }).map((_, i) => (
+        <div key={i} className="animate-pulse">
+          <div className="aspect-[2/3] rounded-xl bg-gray-200 dark:bg-gray-700"></div>
+          <div className="mt-4 space-y-2">
+            <div className="h-4 rounded bg-gray-200 dark:bg-gray-700"></div>
+            <div className="h-3 w-2/3 rounded bg-gray-200 dark:bg-gray-700"></div>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
 
-function Badge({ active, children, onClick }) {
+function Rating({ value, count }) {
+  const display = value ? value.toFixed(1) : "–"
+  const percentage = (value / 10) * 100
+  
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
+        <div className="relative">
+          <svg className="h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.802 2.036a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.802-2.036a1 1 0 00-1.176 0l-2.802 2.036c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.88 8.719c-.783-.57-.38-1.81.588-1.81H6.93a1 1 0 00.95-.69l1.07-3.292z" />
+          </svg>
+          <div 
+            className="absolute inset-0 overflow-hidden"
+            style={{ width: `${percentage}%` }}
+          >
+            <svg className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.802 2.036a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.802-2.036a1 1 0 00-1.176 0l-2.802 2.036c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.88 8.719c-.783-.57-.38-1.81.588-1.81H6.93a1 1 0 00.95-.69l1.07-3.292z" />
+            </svg>
+          </div>
+        </div>
+        <span className="text-sm font-semibold text-gray-900 dark:text-white">{display}</span>
+      </div>
+      <span className="text-xs text-gray-500 dark:text-gray-400">
+        ({new Intl.NumberFormat().format(count)})
+      </span>
+    </div>
+  )
+}
+
+function FilterButton({ active, children, onClick, icon }) {
   return (
     <button
       onClick={onClick}
-      className={[
-        "rounded-full px-3 py-1 text-sm transition-colors",
-        active ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-accent",
-      ].join(" ")}
+      className={`
+        flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all duration-200
+        ${active 
+          ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25 transform scale-105" 
+          : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 hover:shadow-md"
+        }
+      `}
       aria-current={active ? "page" : undefined}
     >
+      {icon && <span className="text-lg">{icon}</span>}
       {children}
     </button>
   )
@@ -147,28 +178,66 @@ function Badge({ active, children, onClick }) {
 function Card({ item }) {
   const href = `https://www.themoviedb.org/${item.media_type}/${item.id}`
   const title = item.title + (item.year ? ` (${item.year})` : "")
+  
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative flex flex-col overflow-hidden rounded-lg border bg-card transition hover:shadow-sm"
+      className="group block transform transition-all duration-300 hover:scale-105"
     >
-      <div className="aspect-[2/3] overflow-hidden bg-muted">
-        <img
-          src={posterUrl(item.poster_path, "w185")}
-          alt={`Poster for ${title}`}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-        />
-      </div>
-      <div className="flex flex-1 flex-col gap-2 p-3">
-        <div className="line-clamp-2 text-sm font-medium leading-tight">{item.title}</div>
-        <div className="flex items-center justify-between">
+      <div className="relative overflow-hidden rounded-xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transition-shadow duration-300">
+        {/* Poster */}
+        <div className="aspect-[2/3] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
+          <img
+            src={posterUrl(item.poster_path, "w342")}
+            alt={`Poster for ${title}`}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+          
+          {/* Overlay gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          
+          {/* Media type badge */}
+          <div className="absolute top-3 right-3">
+            <span className={`
+              inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-sm
+              ${item.media_type === 'movie' 
+                ? 'bg-red-500/90 text-white' 
+                : 'bg-blue-500/90 text-white'
+              }
+            `}>
+              {item.media_type === 'movie' ? '🎬' : '📺'} {item.media_type.toUpperCase()}
+            </span>
+          </div>
+          
+          {/* Rating badge */}
+          <div className="absolute top-3 left-3">
+            <div className="flex items-center gap-1 bg-black/70 backdrop-blur-sm rounded-full px-2 py-1">
+              <svg className="h-3 w-3 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.802 2.036a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.802-2.036a1 1 0 00-1.176 0l-2.802 2.036c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.88 8.719c-.783-.57-.38-1.81.588-1.81H6.93a1 1 0 00.95-.69l1.07-3.292z" />
+              </svg>
+              <span className="text-xs font-semibold text-white">
+                {item.vote_average ? item.vote_average.toFixed(1) : '–'}
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Content */}
+        <div className="p-4 space-y-3">
+          <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            {item.title}
+          </h3>
+          
+          {item.year && (
+            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+              {item.year}
+            </p>
+          )}
+          
           <Rating value={item.vote_average} count={item.vote_count} />
-          <span className="rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground uppercase tracking-wide">
-            {item.media_type}
-          </span>
         </div>
       </div>
     </a>
@@ -179,48 +248,127 @@ export default function MustWatchVault() {
   const [items, setItems] = useState([])
   const [type, setType] = useState("all")
   const [error, setError] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true)
+    setError(null)
+    
     getMustWatch(type, 36)
-      .then(setItems)
-      .catch((e) => setError(e.message))
+      .then((data) => {
+        setItems(data)
+        setLoading(false)
+      })
+      .catch((e) => {
+        setError(e.message)
+        setLoading(false)
+      })
   }, [type])
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-8">
-      <header className="mb-6 flex flex-col gap-2">
-        <h1 className="text-pretty text-2xl font-semibold md:text-3xl">Top Rated Vault</h1>
-        <p className="text-pretty text-sm text-muted-foreground md:text-base">
-          The highest rated movies and TV shows of all time. Data live from TMDB.
-        </p>
-      </header>
-
-      <div className="mb-6 flex flex-wrap items-center gap-2">
-        <Badge active={type === "all"} onClick={() => setType("all")}>All</Badge>
-        <Badge active={type === "movie"} onClick={() => setType("movie")}>Movies</Badge>
-        <Badge active={type === "tv"} onClick={() => setType("tv")}>TV</Badge>
-      </div>
-
-      {error ? (
-        <div role="alert" className="rounded-md border border-red-400 bg-red-100 p-4 text-sm text-red-700">
-          <p className="font-medium">Problem loading titles</p>
-          <p className="mt-1">{error}</p>
-        </div>
-      ) : (
-        <section>
-          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-            {items.map((item) => (
-              <li key={`${item.media_type}-${item.id}`}>
-                <Card item={item} />
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-8 text-xs text-muted-foreground">
-            Showing the highest rated movies and TV series. Data © TMDB.
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-900 dark:to-blue-900">
+      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        {/* Header */}
+        <header className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent mb-4">
+            <span className="text-4xl">🏆</span>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+              Top Rated Vault
+            </h1>
+          </div>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+            Discover the highest rated movies and TV shows of all time, curated from millions of reviews worldwide.
           </p>
-        </section>
-      )}
-    </main>
+          <div className="mt-6 flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+            <span className="inline-flex items-center gap-1">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              Live data from TMDB
+            </span>
+          </div>
+        </header>
+
+        {/* Filters */}
+        <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
+          <FilterButton 
+            active={type === "all"} 
+            onClick={() => setType("all")}
+            icon="🎭"
+          >
+            All Content
+          </FilterButton>
+          <FilterButton 
+            active={type === "movie"} 
+            onClick={() => setType("movie")}
+            icon="🎬"
+          >
+            Movies
+          </FilterButton>
+          <FilterButton 
+            active={type === "tv"} 
+            onClick={() => setType("tv")}
+            icon="📺"
+          >
+            TV Shows
+          </FilterButton>
+        </div>
+
+        {/* Content */}
+        {error ? (
+          <div className="max-w-md mx-auto">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6 text-center">
+              <div className="text-4xl mb-4">⚠️</div>
+              <h3 className="text-lg font-semibold text-red-800 dark:text-red-200 mb-2">
+                Unable to Load Content
+              </h3>
+              <p className="text-red-600 dark:text-red-300 text-sm leading-relaxed">
+                {error}
+              </p>
+              <button 
+                onClick={() => window.location.reload()} 
+                className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
+              >
+                Try Again
+              </button>
+            </div>
+          </div>
+        ) : loading ? (
+          <LoadingSkeleton />
+        ) : (
+          <section>
+            <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+              {items.map((item) => (
+                <Card key={`${item.media_type}-${item.id}`} item={item} />
+              ))}
+            </div>
+
+            {items.length === 0 && !loading && (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  No results found
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Try adjusting your filters or check back later.
+                </p>
+              </div>
+            )}
+
+            {/* Footer */}
+            <footer className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400">
+                <p>
+                  Showing {items.length} top-rated {type === 'all' ? 'titles' : type === 'movie' ? 'movies' : 'TV shows'}
+                </p>
+                <p className="flex items-center gap-2">
+                  <span>Powered by</span>
+                  <span className="font-semibold text-blue-600 dark:text-blue-400">TMDB</span>
+                  <span>🎬</span>
+                </p>
+              </div>
+            </footer>
+          </section>
+        )}
+      </main>
+    </div>
   )
 }
