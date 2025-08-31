@@ -1,84 +1,96 @@
 import { useState } from "react";
-import { auth,googleprovider} from "../../utilis/firebase";
-import { FcGoogle } from "react-icons/fc";
-import { signInWithEmailAndPassword,signInWithPopup} from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { auth } from "../../utilis/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate, Link } from "react-router-dom";
 
-function Signup() {
-  const navigate=useNavigate()
+const Signup = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-
-  const loginwithgoogle = async () => {
-    try{
-      await signInWithPopup(auth,googleprovider);
-      navigate("/")
-    }
-    catch(err){
-      console.log("login",err);
-    }
-  };
-
-
-  const [email,setemail]= useState("")
-  const [password,setpassword]= useState("")
-
-  const handleLogin = (e) => {
+  // Email/Password Signup
+  const handleSignup = async (e) => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        navigate("/")
-        console.log(user);
-    })
-    .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage)
-    });
+    setError(""); // reset error
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      navigate("/login"); // ✅ go to login page instead of home
+    } catch (error) {
+      console.error("Signup error:", error.code, error.message);
+      if (error.code === "auth/email-already-in-use") {
+        setError("Email already registered. Please login instead.");
+      } else if (error.code === "auth/invalid-email") {
+        setError("Invalid email format.");
+      } else if (error.code === "auth/weak-password") {
+        setError("Password should be at least 6 characters.");
+      } else {
+        setError("Signup failed. Try again.");
+      }
+    }
   };
-
 
   return (
-    <div className="w-full flex text-black  justify-center items-center">
-    <div className=" p-10 rounded-lg shadow-lg   w-[50%] bg-white">
-      <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
-      <form>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-semibold mb-2">Email</label>
-          <input
-            type="email"
-            id="email"
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setemail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="password" className="block text-sm font-semibold mb-2">Password</label>
-          <input
-            type="password"
-            id="password"
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setpassword(e.target.value)}
-            required
-          />
-        </div>
-        <button  onClick={handleLogin}  type="submit" className="w-full bg-blue-500 text-white py-2 mb-2 px-4 rounded-lg hover:bg-blue-600">
-         Sign Up
-        </button>
-        <button onClick={loginwithgoogle} type="submit" className=" w-full bg-gray-400 text-white py-2 px-4 rounded-lg flex items-center justify-center gap-10">
-          <FcGoogle/> login with google
-        </button>
-      </form>
-      <p className="text-gray-600 mt-4 text-sm text-center flex justify-between">Don't have an account ? <a href="/login" className="text-blue-500 hover:underline">Login</a></p>
-    </div>
-  </div>
-  )
-}
+    <div className="min-h-screen w-full flex justify-center items-center bg-gradient-to-br from-purple-700 via-purple-900 to-black">
+      {/* Glassmorphism Card */}
+      <div className="backdrop-blur-lg bg-white/10 p-8 rounded-2xl shadow-xl w-[90%] sm:w-[400px] border border-white/20">
+        <h2 className="text-3xl font-bold text-white text-center mb-6">Create Account</h2>
 
-export default Signup
+        <form onSubmit={handleSignup} className="space-y-5">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 
+              focus:outline-none focus:ring-2 focus:ring-purple-400 border border-white/30"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-200 mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 
+              focus:outline-none focus:ring-2 focus:ring-purple-400 border border-white/30"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Show error if any */}
+          {error && (
+            <p className="text-red-400 text-sm text-center">{error}</p>
+          )}
+
+          <button
+            type="submit"
+            className="w-full py-2 rounded-lg bg-gradient-to-r from-purple-500 to-purple-700 text-white font-semibold shadow-md hover:scale-105 transform transition duration-300"
+          >
+            Sign Up
+          </button>
+        </form>
+
+        <p className="text-gray-300 mt-6 text-sm text-center">
+          Already have an account?{" "}
+          <Link to="/login" className="text-purple-300 hover:underline">
+            Login
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Signup;
