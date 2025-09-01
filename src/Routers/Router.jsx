@@ -16,6 +16,7 @@ import Signup from "../components/Signup/Signup"
 import WatchLive from "../components/WatchLive"
 import RandomGenerator from "../components/Random/RandomGenerator"
 import MustWatch from "../components/MustWatch/MustWatch"
+import WatchLater from "../components/Watchlater/WatchLater"
 function Link() {
   return (
     <div className=" bg-zinc-800  w-screen h-screen flex">
@@ -41,6 +42,7 @@ function Link() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/random" element={<RandomGenerator />} />
         <Route path="/mustwatch" element={<MustWatch />} />
+        <Route path="/watchlater" element={<WatchLater />} />
       </Routes>
     </div>
   )
