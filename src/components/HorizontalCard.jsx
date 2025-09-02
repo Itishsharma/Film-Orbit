@@ -14,10 +14,14 @@ function HorizontalCard({ data, title }) {
       try {
         const [movieGenres, tvGenres] = await Promise.all([
           fetch(
-            `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8"}`,
+            `https://api.themoviedb.org/3/genre/movie/list?api_key=${
+              process.env.REACT_APP_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8"
+            }`,
           ).then((res) => res.json()),
           fetch(
-            `https://api.themoviedb.org/3/genre/tv/list?api_key=${process.env.REACT_APP_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8"}`,
+            `https://api.themoviedb.org/3/genre/tv/list?api_key=${
+              process.env.REACT_APP_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8"
+            }`,
           ).then((res) => res.json()),
         ])
 
@@ -45,7 +49,7 @@ function HorizontalCard({ data, title }) {
   const getMediaType = (item) => {
     if (title === "movie") return "Movie"
     if (title === "tv") return "TV Series"
-    return item.media_type === "movie" ? "Movie" : "TV Series"
+    return item.media_type === "tv" ? "TV Series" : "Movie"
   }
 
   const scroll = (direction) => {
@@ -73,50 +77,52 @@ function HorizontalCard({ data, title }) {
         className="flex gap-6 overflow-x-auto scrollbar-hide p-5 scroll-smooth"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
-        {data.map((item, i) => (
-          <Link to={`/${item.media_type || title}/details/${item.id}`} key={i} className="relative group flex-shrink-0">
-            <div className="relative w-[300px] h-[420px] rounded-3xl overflow-hidden shadow-2xl hover:scale-105 transition-all duration-500">
-              <div className="absolute inset-0">
-                <img
-                  className="w-full h-full object-cover"
-                  src={`https://image.tmdb.org/t/p/original/${item.poster_path || item.backdrop_path}`}
-                  alt="movie poster"
-                />
-              </div>
+        {data.map((item, i) => {
+          const mediaType = item.media_type || title || "movie"
+          const imageUrl =
+            item.poster_path || item.backdrop_path
+              ? `https://image.tmdb.org/t/p/original/${item.poster_path || item.backdrop_path}`
+              : "https://via.placeholder.com/300x420?text=No+Image"
 
-              <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-black/95 via-black/70 to-transparent">
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-5 border border-white/10">
-                    {/* Movie title */}
-                    <h1 className="text-white text-lg font-bold mb-2 line-clamp-2">
-                      {item.name || item.title || item.original_name || item.original_title}
-                    </h1>
+          return (
+            <Link to={`/${mediaType}/details/${item.id}`} key={i} className="relative group flex-shrink-0">
+              <div className="relative w-[300px] h-[420px] rounded-3xl overflow-hidden shadow-2xl hover:scale-105 transition-all duration-500">
+                <img className="w-full h-full object-cover" src={imageUrl} alt="movie poster" />
 
-                    {/* Year */}
-                    {(item.release_date || item.first_air_date) && (
-                      <p className="text-gray-300 text-sm mb-2">
-                        {new Date(item.release_date || item.first_air_date).getFullYear()}
-                      </p>
-                    )}
+                <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-black/95 via-black/70 to-transparent">
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-5 border border-white/10">
+                      {/* Movie/TV title */}
+                      <h1 className="text-white text-lg font-bold mb-2 line-clamp-2">
+                        {item.name || item.title || item.original_name || item.original_title}
+                      </h1>
 
-                    <p className="text-gray-400 text-xs mb-3">{getGenres(item) || getMediaType(item)}</p>
+                      {/* Year */}
+                      {(item.release_date || item.first_air_date) && (
+                        <p className="text-gray-300 text-sm mb-2">
+                          {new Date(item.release_date || item.first_air_date).getFullYear()}
+                        </p>
+                      )}
 
-                    {/* Rating */}
-                    {item.vote_average && (
-                      <div className="flex items-center">
-                        <div className="bg-yellow-500/20 backdrop-blur-sm border border-yellow-500/30 rounded-full px-3 py-1">
-                          <span className="text-yellow-400 text-sm font-medium">
-                            {(item.vote_average * 10).toFixed(0)}%
-                          </span>
+                      <p className="text-gray-400 text-xs mb-3">{getGenres(item) || getMediaType(item)}</p>
+
+                      {/* Rating */}
+                      {item.vote_average && (
+                        <div className="flex items-center">
+                          <div className="bg-yellow-500/20 backdrop-blur-sm border border-yellow-500/30 rounded-full px-3 py-1">
+                            <span className="text-yellow-400 text-sm font-medium">
+                              {(item.vote_average * 10).toFixed(0)}%
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          )
+        })}
       </div>
 
       {showLeftArrow && (

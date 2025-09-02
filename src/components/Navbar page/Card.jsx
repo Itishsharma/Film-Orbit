@@ -12,13 +12,11 @@ function Card({ data, title }) {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
+        const apiKey = import.meta.env.VITE_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8"
+
         const [movieGenres, tvGenres] = await Promise.all([
-          fetch(
-            `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.REACT_APP_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8"}`,
-          ).then((res) => res.json()),
-          fetch(
-            `https://api.themoviedb.org/3/genre/tv/list?api_key=${process.env.REACT_APP_TMDB_API_KEY || "8265bd1679663a7ea12ac168da84d2e8"}`,
-          ).then((res) => res.json()),
+          fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}`).then((res) => res.json()),
+          fetch(`https://api.themoviedb.org/3/genre/tv/list?api_key=${apiKey}`).then((res) => res.json()),
         ])
 
         const genres = {}
@@ -73,52 +71,66 @@ function Card({ data, title }) {
         className="flex gap-6 overflow-x-auto scrollbar-hide p-5 scroll-smooth"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
-        {data.map((item, i) => (
-          <Link to={`/${item.media_type || title}/details/${item.id}`} key={i} className="relative group flex-shrink-0">
-            <div className="relative w-[300px] h-[420px] rounded-3xl overflow-hidden shadow-2xl hover:scale-105 transition-all duration-500">
-              <div className="absolute inset-0">
-                <img
-                  className="w-full h-full object-cover"
-                  src={`https://image.tmdb.org/t/p/original/${item.poster_path || item.backdrop_path}`}
-                  alt="movie poster"
-                />
-              </div>
+        {data?.length > 0 &&
+          data.map((item, i) => {
+            // ✅ Skip if no image (fixes blank/404 issues)
+            if (!item.poster_path && !item.backdrop_path) return null
 
-              <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-black/95 via-black/70 to-transparent">
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-5 border border-white/10">
-                    {/* Movie title */}
-                    <h1 className="text-white text-lg font-bold mb-2 line-clamp-2">
-                      {item.name || item.title || item.original_name || item.original_title}
-                    </h1>
+            return (
+              <Link
+                to={`/${item.media_type || title}/details/${item.id}`}
+                key={i}
+                className="relative group flex-shrink-0"
+              >
+                <div className="relative w-[300px] h-[420px] rounded-3xl overflow-hidden shadow-2xl hover:scale-105 transition-all duration-500">
+                  <div className="absolute inset-0">
+                    <img
+                      className="w-full h-full object-cover"
+                      src={`https://image.tmdb.org/t/p/original/${item.poster_path || item.backdrop_path}`}
+                      alt={item.title || item.name || "poster"}
+                      loading="lazy"
+                    />
+                  </div>
 
-                    {/* Year */}
-                    {(item.release_date || item.first_air_date) && (
-                      <p className="text-gray-300 text-sm mb-2">
-                        {new Date(item.release_date || item.first_air_date).getFullYear()}
-                      </p>
-                    )}
+                  <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-black/95 via-black/70 to-transparent">
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-5 border border-white/10">
+                        {/* Movie title */}
+                        <h1 className="text-white text-lg font-bold mb-2 line-clamp-2">
+                          {item.name || item.title || item.original_name || item.original_title}
+                        </h1>
 
-                    <p className="text-gray-400 text-xs mb-3">{getGenres(item) || getMediaType(item)}</p>
+                        {/* Year */}
+                        {(item.release_date || item.first_air_date) && (
+                          <p className="text-gray-300 text-sm mb-2">
+                            {new Date(item.release_date || item.first_air_date).getFullYear()}
+                          </p>
+                        )}
 
-                    {/* Rating */}
-                    {item.vote_average && (
-                      <div className="flex items-center">
-                        <div className="bg-yellow-500/20 backdrop-blur-sm border border-yellow-500/30 rounded-full px-3 py-1">
-                          <span className="text-yellow-400 text-sm font-medium">
-                            {(item.vote_average * 10).toFixed(0)}%
-                          </span>
-                        </div>
+                        <p className="text-gray-400 text-xs mb-3">{getGenres(item) || getMediaType(item)}</p>
+
+                        {/* Rating */}
+                        {item.vote_average ? (
+                          <div className="flex items-center">
+                            <div className="bg-yellow-500/20 backdrop-blur-sm border border-yellow-500/30 rounded-full px-3 py-1">
+                              <span className="text-yellow-400 text-sm font-medium">
+                                {(item.vote_average * 10).toFixed(0)}%
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
+                          <p className="text-gray-500 text-xs">No Rating</p>
+                        )}
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </Link>
-        ))}
+              </Link>
+            )
+          })}
       </div>
 
+      {/* Left Scroll Button */}
       {showLeftArrow && (
         <button
           onClick={() => scroll("left")}
@@ -130,6 +142,7 @@ function Card({ data, title }) {
         </button>
       )}
 
+      {/* Right Scroll Button */}
       {showRightArrow && (
         <button
           onClick={() => scroll("right")}
