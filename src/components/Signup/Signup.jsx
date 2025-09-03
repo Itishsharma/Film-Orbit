@@ -31,7 +31,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex justify-center items-center bg-gradient-to-br from-purple-700 via-purple-900 to-black">
+    <div className="min-h-screen w-full flex justify-center items-center bg-gradient-to-br from-black via-purple-900 to-gray-900 p-4">
       {/* Glassmorphism Card */}
       <div className="backdrop-blur-lg bg-white/10 p-8 rounded-2xl shadow-xl w-[90%] sm:w-[400px] border border-white/20">
         <h2 className="text-3xl font-bold text-white text-center mb-6">Create Account</h2>

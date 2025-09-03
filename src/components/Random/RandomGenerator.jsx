@@ -136,29 +136,19 @@ function RandomGenerator() {
   const currentGenres = contentType === "movie" ? MOVIE_GENRES : TV_GENRES
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-black via-gray-900 to-black">
-      <div className="w-full bg-gray-900/95 backdrop-blur-sm border-b border-gray-800/50 px-4 py-4">
+    <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-purple-900 to-black overflow-x-hidden">
+      <div className="w-full bg-gradient-to-r from-black/80 via-gray-900/80 to-black/80 backdrop-blur-xl border-b border-purple-900/30 px-8 py-6">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <button
               onClick={handleBack}
-              className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-500 text-white font-medium rounded-lg hover:from-purple-700 hover:to-purple-600 transition-all duration-200 shadow-lg shadow-purple-500/25"
+              className="group flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white font-medium rounded-xl hover:from-purple-700 hover:to-purple-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
+              <i className="ri-arrow-left-line text-xl"></i>
               <span>Back</span>
             </button>
-            <h1 className="text-xl md:text-2xl font-bold text-white">Random Movies and Series</h1>
-          </div>
-          <div className="flex items-center space-x-3">
-            <select className="px-3 py-2 bg-gray-800 text-white rounded-lg border border-gray-700 text-sm">
-              <option>Category</option>
-            </select>
-            <select className="px-3 py-2 bg-gray-800 text-white rounded-lg border border-gray-700 text-sm">
-              <option>Duration</option>
-            </select>
-          </div>
+            <h1 className="text-3xl font-bold text-white">Random Movies and Series</h1>
+          </div> 
         </div>
       </div>
 
@@ -170,7 +160,7 @@ function RandomGenerator() {
                 Random Discovery
               </span>
             </h2>
-            <p className="text-gray-400 text-base md:text-lg">Choose your preferences and discover something new!</p>
+            <p className="text-gray-300 text-base md:text-lg">Set your preferences, discover hidden gems!</p>
           </div>
 
           <div className="bg-gradient-to-r from-gray-900/80 to-black/80 backdrop-blur-xl border border-green-500/20 rounded-2xl p-6 mb-8 max-w-4xl mx-auto shadow-2xl shadow-green-500/10">

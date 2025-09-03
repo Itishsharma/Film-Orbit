@@ -3,9 +3,7 @@ import { Route, Routes } from "react-router-dom"
 import Trending from "../components/Navbar page/Trending"
 import Popular from "../components/Popular/Popular"
 import Movies from "../components/Movie/Movies"
-import TVshows from "../components/Tv shows/Tvshows"
-import People from "../components/People/People"
-import PersonDetails from "../components/Details/PersonDetails"
+import TVshows from "../components/Tv shows/Tvshows" 
 import MovieDetails from "../components/Details/MovieDetails"
 import TvDetails from "../components/Details/TvDetails"
 import Trailer from "../components/Trailer"
@@ -25,8 +23,7 @@ function Link() {
         <Route path="/Trending" element={<Trending />} />
         <Route path="/popular" element={<Popular />} />
         <Route path="/movie" element={<Movies />} />
-        <Route path="/tvshows" element={<TVshows />} />
-        <Route path="/person" element={<People />} />
+        <Route path="/tvshows" element={<TVshows />} /> 
         <Route path="/movie/details/:id" element={<MovieDetails />}>
           <Route path="/movie/details/:id/trailer" element={<Trailer />} />
           <Route path="/movie/details/:id/providers/movie" element={<WatchLive />} />
@@ -34,8 +31,7 @@ function Link() {
         <Route path="/tv/details/:id" element={<TvDetails />}>
           <Route path="/tv/details/:id/trailer" element={<Trailer />} />
           <Route path="/tv/details/:id/providers/tv" element={<WatchLive />} />
-        </Route>
-        <Route path="/person/details/:id" element={<PersonDetails />} />
+        </Route> 
         <Route path="*" element={<Notfound />}></Route>
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />

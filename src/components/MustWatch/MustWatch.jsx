@@ -1,4 +1,3 @@
-// MustWatch.jsx
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -37,7 +36,8 @@ export default function MustWatch() {
 
   const renderCards = (items, type) => (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-4 w-full">
+      {/* 5 cards per row */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 w-full">
         {items.slice(0, 100).map((item) => (
           <a
             key={item.id}
@@ -83,7 +83,7 @@ export default function MustWatch() {
                 ? (setMoviePage((p) => p + 1), fetchMovies(moviePage + 1))
                 : (setTvPage((p) => p + 1), fetchTvShows(tvPage + 1))
             }
-            className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-semibold rounded-full shadow-lg transition"
+            className="px-6 py-2 bg-gradient-to-r from-purple-700 to-purple-800 hover:opacity-90 text-white font-semibold rounded-full shadow-lg transition"
           >
             Load More {type === "movie" ? "Movies" : "TV Shows"}
           </button>
@@ -93,52 +93,66 @@ export default function MustWatch() {
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-900 text-white">
-      <div className="w-full px-4 py-6">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-8">
+    <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-purple-900 to-black overflow-x-hidden">
+      {/* Top Bar */}
+      <div className="w-full bg-gradient-to-r from-black/80 via-gray-900/80 to-black/80 backdrop-blur-xl border-b border-purple-900/30 px-8 py-6">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-4">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 transition"
+            className="group flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white font-medium rounded-xl hover:from-purple-700 hover:to-purple-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
           >
-            <span className="text-lg">←</span>
+            <i className="ri-arrow-left-line text-xl"></i>
             <span className="font-medium">Back</span>
           </button>
-          <h2 className="text-3xl font-bold">
-            Trending <span className="text-gray-300">All</span>
-          </h2>
+          <h2 className="text-3xl font-bold text-white">Must Watch</h2>
+          </div>
         </div>
+      </div>
 
-        {/* Tabs */}
-        <div className="flex justify-center mb-8 space-x-4">
-          <button
-            onClick={() => setActiveTab("movies")}
-            className={`px-5 py-2 rounded-full text-sm font-semibold transition ${
-              activeTab === "movies"
-                ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
-                : "bg-white/10 text-gray-300 backdrop-blur-md hover:bg-white/20"
-            }`}
-          >
-            Movies
-          </button>
-          <button
-            onClick={() => setActiveTab("tv")}
-            className={`px-5 py-2 rounded-full text-sm font-semibold transition ${
-              activeTab === "tv"
-                ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white"
-                : "bg-white/10 text-gray-300 backdrop-blur-md hover:bg-white/20"
-            }`}
-          >
-            TV Shows
-          </button>
+      {/* Gradient Sub-header */}
+     <div className="flex items-center justify-center p-4 md:p-6">
+        <div className="w-full max-w-7xl mx-auto">
+          <div className="text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Must-Watch Vault
+              </span>
+            </h2>
+            <p className="text-gray-300 text-base md:text-lg">Watch Before You Die!</p>
+          </div>
         </div>
+      </div>
 
-        {/* Content */}
-        <div className="w-full">
-          {activeTab === "movies"
-            ? renderCards(movies, "movie")
-            : renderCards(tvShows, "tv")}
-        </div>
+      {/* Tabs */}
+      <div className="flex justify-center mt-0 space-x-8">
+  <button
+    onClick={() => setActiveTab("movies")}
+    className={`relative px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 
+      ${activeTab === "movies"
+        ? "bg-gradient-to-r from-blue-800 to-purple-800 text-white shadow-lg shadow-purple-500/30 scale-105"
+        : "bg-white/5 text-gray-300 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:scale-105"}`}
+  >
+    <span className="relative z-10">🎬 Movies</span>
+  </button>
+
+  <button
+    onClick={() => setActiveTab("tv")}
+    className={`relative px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 
+      ${activeTab === "tv"
+        ? "bg-gradient-to-r from-purple-800 to-blue-800 text-white shadow-lg shadow-purple-500/30 scale-105"
+        : "bg-white/5 text-gray-300 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:scale-105"}`}
+  >
+    <span className="relative z-10">📺 TV Shows</span>
+  </button>
+</div>
+
+
+      {/* Content */}
+      <div className="w-full px-8 py-6">
+        {activeTab === "movies"
+          ? renderCards(movies, "movie")
+          : renderCards(tvShows, "tv")}
       </div>
     </div>
   )

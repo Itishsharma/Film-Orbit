@@ -1,74 +1,61 @@
-// src/components/utilis/WatchLater.js
+import { db, auth } from "./firebase"
+import { doc, setDoc, getDoc } from "firebase/firestore"
 
-import { useEffect, useState } from "react";
-import { auth, db } from "../../utilis/firebase";
-import { collection, getDocs, doc, setDoc } from "firebase/firestore";
-
-// 🔹 Named export (helper function for adding movies to Watch Later)
-export const addToWatchLater = async (movie) => {
+/**
+ * ➕ Add a movie/show to Watch Later
+ */
+export const addToWatchLater = async (item) => {
   if (!auth.currentUser) {
-    alert("Please log in to save movies");
-    return;
+    alert("You must be logged in to add to Watch Later")
+    return
   }
 
-  const userUID = auth.currentUser.uid;
-  const docRef = doc(db, "users", userUID, "watchLater", movie.id.toString());
+  const userUID = auth.currentUser.uid
+  const docRef = doc(db, "watchLater", userUID)
+  const docSnap = await getDoc(docRef)
 
-  await setDoc(docRef, movie);
-  alert(`${movie.title || movie.name} added to Watch Later`);
-};
+  let watchList = []
+  if (docSnap.exists()) {
+    watchList = docSnap.data().list || []
+  }
 
-// 🔹 Default export (React component for showing Watch Later list)
-function WatchLater() {
-  const [movies, setMovies] = useState([]);
+  // prevent duplicates
+  const exists = watchList.some((m) => m.id === item.id)
+  if (exists) return
 
-  useEffect(() => {
-    const fetchWatchLater = async () => {
-      if (!auth.currentUser) return;
-      const userUID = auth.currentUser.uid;
-      const querySnapshot = await getDocs(
-        collection(db, "users", userUID, "watchLater")
-      );
-      const list = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setMovies(list);
-    };
-    fetchWatchLater();
-  }, []);
-
-  return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Watch Later</h2>
-      {movies.length === 0 ? (
-        <p>No movies added yet.</p>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {movies.map((movie) => (
-            <div
-              key={movie.id}
-              className="rounded-lg overflow-hidden shadow-lg bg-black/30"
-            >
-              <img
-                src={`https://image.tmdb.org/t/p/w500/${
-                  movie.poster_path || movie.poster
-                }`}
-                alt={movie.title || movie.name}
-                className="w-full h-[200px] object-cover"
-              />
-              <div className="p-2 bg-white/10 text-white">
-                <p className="font-semibold">{movie.title || movie.name}</p>
-                <p className="text-xs">
-                  {movie.media_type ? movie.media_type.toUpperCase() : ""}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  watchList.push(item)
+  await setDoc(docRef, { list: watchList })
 }
 
-export default WatchLater;
+/**
+ * 📥 Get Watch Later list
+ */
+export const getWatchLater = async () => {
+  if (!auth.currentUser) return []
+
+  const userUID = auth.currentUser.uid
+  const docRef = doc(db, "watchLater", userUID)
+  const docSnap = await getDoc(docRef)
+
+  if (docSnap.exists()) {
+    return docSnap.data().list || []
+  }
+  return []
+}
+
+/**
+ * ❌ Remove from Watch Later
+ */
+export const removeFromWatchLater = async (id) => {
+  if (!auth.currentUser) return
+
+  const userUID = auth.currentUser.uid
+  const docRef = doc(db, "watchLater", userUID)
+  const docSnap = await getDoc(docRef)
+
+  if (docSnap.exists()) {
+    let watchList = docSnap.data().list || []
+    watchList = watchList.filter((m) => m.id !== id)
+    await setDoc(docRef, { list: watchList })
+  }
+}

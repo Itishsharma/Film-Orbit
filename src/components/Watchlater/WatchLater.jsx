@@ -1,64 +1,80 @@
-// src/components/utilis/WatchLater.js
+"use client"
 
-import { useEffect, useState } from "react";
-import { auth, db } from "../../utilis/firebase";
-import { collection, getDocs, doc, setDoc } from "firebase/firestore";
+import { useEffect, useState } from "react"
+import { auth } from "../../utilis/firebase"
+import { getWatchLater, removeFromWatchLater } from "../../utilis/WatchLater"
+import Loader from "../Loader"
 
-// 🔹 Named export (helper function for adding)
-export const addToWatchLater = async (movie) => {
-  if (!auth.currentUser) {
-    alert("Please log in to save movies");
-    return;
-  }
-
-  const userUID = auth.currentUser.uid;
-  const docRef = doc(db, "users", userUID, "watchLater", movie.id.toString());
-
-  await setDoc(docRef, movie);
-  alert(`${movie.title || movie.name} added to Watch Later`);
-};
-
-// 🔹 Default export (React component)
-function WatchLater() {
-  const [movies, setMovies] = useState([]);
+export default function WatchLater() {
+  const [movies, setMovies] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchWatchLater = async () => {
-      if (!auth.currentUser) return;
-      const userUID = auth.currentUser.uid;
-      const querySnapshot = await getDocs(
-        collection(db, "users", userUID, "watchLater")
-      );
-      const list = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setMovies(list);
-    };
-    fetchWatchLater();
-  }, []);
+    const fetchList = async () => {
+      if (!auth.currentUser) {
+        setMovies([])
+        setLoading(false)
+        return
+      }
+      const list = await getWatchLater()
+      setMovies(list)
+      setLoading(false)
+    }
+
+    fetchList()
+  }, [])
+
+  const handleRemove = async (id) => {
+    await removeFromWatchLater(id)
+    setMovies((prev) => prev.filter((m) => m.id !== id))
+  }
+
+  if (loading) return <Loader />
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Watch Later</h2>
-      {movies.length === 0 ? (
-        <p>No movies added yet.</p>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {movies.map((movie) => (
-            <div key={movie.id} className="rounded-lg overflow-hidden shadow-lg">
-              <img
-                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path || movie.poster}`}
-                alt={movie.title || movie.name}
-                className="w-full h-[200px] object-cover"
-              />
-              <div className="p-2 bg-white/10 text-white">
-                <p className="font-semibold">{movie.title || movie.name}</p>
-                <p className="text-xs">{movie.media_type?.toUpperCase()}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
+    <div className="min-h-screen bg-black text-white px-6 py-12">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold mb-8 bg-gradient-to-r from-white to-purple-400 bg-clip-text text-transparent">
+          My Watch Later
+        </h1>
 
-export default WatchLater;
+        {movies.length === 0 ? (
+          <p className="text-gray-400 text-lg">
+            No movies or shows in your Watch Later list yet.
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            {movies.map((item) => (
+              <div
+                key={item.id}
+                className="bg-purple-900/20 border border-purple-500/20 rounded-xl overflow-hidden shadow-lg hover:shadow-purple-500/30 transition-all"
+              >
+                {item.poster ? (
+                  <img
+                    src={item.poster}
+                    alt={item.title}
+                    className="w-full h-64 object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-64 flex items-center justify-center text-gray-500">
+                    No Image
+                  </div>
+                )}
+
+                <div className="p-4 space-y-2">
+                  <h2 className="text-lg font-semibold">{item.title}</h2>
+                  <button
+                    onClick={() => handleRemove(item.id)}
+                    className="px-4 py-2 w-full rounded-lg bg-red-600/30 text-red-300 hover:bg-red-600/50 hover:text-white transition"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
