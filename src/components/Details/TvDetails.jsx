@@ -1,12 +1,15 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { asyncloadmovie } from "../actions/Tvactions"
+import { asyncloadmovie } from "../actions/Tvactions.jsx"
 import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router-dom"
-import { removemovie } from "../Redux/Tvslice"
+import { removemovie } from "../Redux/Tvslice.jsx"
 import Loader from "../Loader"
 import HorizontalCard from "../HorizontalCard"
+import { auth } from "../../utilis/firebase"
+import { addToWatchLater, getWatchLater, removeFromWatchLater } from "../../utilis/watchLater";
+
 
 function TvDetails() {
   const { pathname } = useLocation()
@@ -15,12 +18,61 @@ function TvDetails() {
   const { id } = useParams()
   const dispatch = useDispatch()
 
+  const [isInWatchLater, setIsInWatchLater] = useState(false);
+
   useEffect(() => {
     dispatch(asyncloadmovie(id))
     return () => {
       dispatch(removemovie())
     }
   }, [id])
+
+  // 👇 Check if tv show already exists in watch later
+  useEffect(() => {
+    const checkWatchLater = async () => {
+      if (!auth.currentUser) return;
+      const list = await getWatchLater(auth.currentUser.uid);
+      if (list.some((item) => item.id === info?.detail?.id)) {
+        setIsInWatchLater(true);
+      } else {
+        setIsInWatchLater(false);
+      }
+    };
+    if (info?.detail?.id) checkWatchLater();
+  }, [info?.detail?.id]);
+
+
+// 👇 Add / Remove tv show with auth check
+const handleWatchLater = async () => {
+  if (!auth.currentUser) {
+    alert("You must be logged in to save TV shows to Watch Later.");
+    return;
+  }
+
+  const tvItem = {
+    id: info.detail.id,
+    title: info.detail.name || info.detail.title,
+    poster: info.detail.poster_path,
+    type: "tv",
+  };
+
+  try {
+    if (isInWatchLater) {
+      await removeFromWatchLater(auth.currentUser.uid, tvItem.id); // ✅ use TMDB id directly
+      setIsInWatchLater(false);
+      alert("Removed from Watch Later!");
+    } else {
+      await addToWatchLater(auth.currentUser.uid, tvItem);
+      setIsInWatchLater(true);
+      alert("Added to Watch Later!");
+    }
+  } catch (error) {
+    console.error("Error updating Watch Later:", error);
+    alert("An error occurred while updating Watch Later.");
+  }
+};
+
+
 
   return info ? (
     <div className="min-h-screen bg-black text-white w-full overflow-x-hidden">
@@ -33,6 +85,7 @@ function TvDetails() {
         }}
         className="relative min-h-screen w-full"
       >
+        {/* Navbar */}
         <nav className="sticky top-0 z-50 backdrop-blur-md bg-black/30 border-b border-purple-500/20 w-full">
           <div className="flex items-center px-6 py-4 w-full">
             <div className="flex items-center gap-4">
@@ -52,9 +105,11 @@ function TvDetails() {
           </div>
         </nav>
 
+        {/* Content */}
         <div className="w-full px-6 py-12 overflow-x-hidden">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col lg:flex-row gap-12 items-center lg:items-start w-full">
+              {/* Poster */}
               <div className="flex-shrink-0 flex justify-center lg:justify-start w-full lg:w-auto">
                 <div className="relative group">
                   <img
@@ -66,6 +121,7 @@ function TvDetails() {
                 </div>
               </div>
 
+              {/* Details */}
               <div className="flex-1 space-y-8 w-full">
                 <div className="space-y-4">
                   <h1 className="text-5xl lg:text-6xl font-bold bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent leading-tight">
@@ -78,6 +134,7 @@ function TvDetails() {
                   </div>
                 </div>
 
+                {/* Score & Genres */}
                 <div className="flex flex-wrap items-center gap-6">
                   <div className="relative">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 p-0.5 shadow-lg shadow-purple-500/50">
@@ -106,12 +163,14 @@ function TvDetails() {
                   </div>
                 </div>
 
+                {/* Tagline */}
                 {info.detail.tagline && (
                   <p className="text-xl italic text-purple-200 font-light border-l-4 border-purple-500 pl-4">
                     "{info.detail.tagline}"
                   </p>
                 )}
 
+                {/* Overview */}
                 <div className="space-y-4">
                   <h2 className="text-3xl font-bold text-white">Overview</h2>
                   <p className="text-gray-300 text-lg leading-relaxed">
@@ -122,6 +181,7 @@ function TvDetails() {
                   </p>
                 </div>
 
+                {/* Languages */}
                 <div className="space-y-4">
                   <h2 className="text-3xl font-bold text-white">Languages</h2>
                   <div className="flex flex-wrap gap-2">
@@ -136,6 +196,7 @@ function TvDetails() {
                   </div>
                 </div>
 
+                {/* Action Buttons */}
                 <div className="flex flex-wrap gap-4 pt-4">
                   <Link
                     className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/50 hover:scale-105 flex items-center gap-3"
@@ -143,7 +204,6 @@ function TvDetails() {
                   >
                     <i className="ri-play-fill text-xl"></i>
                     Play Trailer
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                   </Link>
 
                   <Link
@@ -153,12 +213,26 @@ function TvDetails() {
                     <i className="ri-tv-line text-xl"></i>
                     Watch Live
                   </Link>
+
+                  {/* ✅ Watch Later Button */}
+                  <button
+                    onClick={handleWatchLater}
+                    className={`group relative px-2 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center gap-3 ${isInWatchLater
+                        ? "bg-red-600/30 border-2 border-red-500 text-red-300 hover:bg-red-500 hover:text-white hover:shadow-lg hover:shadow-red-500/50"
+                        : "bg-purple-700/30 border-2 border-purple-500 text-purple-300 hover:bg-purple-500 hover:text-white hover:shadow-lg hover:shadow-purple-500/50"
+                      }`}
+                  >
+                    <i className={isInWatchLater ? "ri-bookmark-fill text-xl" : "ri-bookmark-line text-xl"}></i>
+                    {isInWatchLater ? "Remove from Watch Later" : "Add to Watch Later"}
+                  </button>
+
                 </div>
               </div>
             </div>
           </div>
         </div>
 
+        {/* Seasons */}
         <div className="w-full px-6 py-12 overflow-x-hidden">
           <div className="max-w-7xl mx-auto">
             <div className="border-t border-purple-500/20 pt-12">
@@ -194,6 +268,7 @@ function TvDetails() {
           </div>
         </div>
 
+        {/* Recommendations */}
         <div className="w-full px-6 py-12 overflow-x-hidden">
           <div className="max-w-7xl mx-auto">
             <div className="border-t border-purple-500/20 pt-12">

@@ -1,12 +1,15 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { asyncloadmovie } from "../actions/Movieactions"
+import { asyncloadmovie } from "../actions/Movieactions.jsx";
 import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router-dom"
-import { removemovie } from "../Redux/Movieslice"
+import { removemovie } from "../Redux/Movieslice.jsx";
 import Loader from "../Loader"
 import HorizontalCard from "../HorizontalCard"
+import { auth } from "../../utilis/firebase";
+import { addToWatchLater, getWatchLater, removeFromWatchLater } from "../../utilis/watchLater";
+
 
 export default function Movie({ data }) {
   const { pathname } = useLocation()
@@ -15,12 +18,61 @@ export default function Movie({ data }) {
   const { id } = useParams()
   const dispatch = useDispatch()
 
+  const [isInWatchLater, setIsInWatchLater] = useState(false)
+
   useEffect(() => {
     dispatch(asyncloadmovie(id))
     return () => {
       dispatch(removemovie())
     }
   }, [id])
+
+  // 👇 Check if movie already exists in watch later
+  useEffect(() => {
+    const checkWatchLater = async () => {
+      if (!auth.currentUser) return;
+      const list = await getWatchLater(auth.currentUser.uid);
+      if (list.some((item) => item.id === info?.detail?.id)) {
+        setIsInWatchLater(true);
+      } else {
+        setIsInWatchLater(false);
+      }
+    };
+    if (info?.detail?.id) checkWatchLater();
+  }, [info?.detail?.id]);
+
+
+  // 👇 Add / Remove movie with auth check
+  const handleWatchLater = async () => {
+    if (!auth.currentUser) {
+      alert("You must be logged in to save movies to Watch Later.");
+      return;
+    }
+
+    const movieItem = {
+      id: info.detail.id,
+      title: info.detail.title || info.detail.name,
+      poster: info.detail.poster_path,
+      type: "movie",
+    };
+
+  try {
+
+    if (isInWatchLater) {
+      await removeFromWatchLater(auth.currentUser.uid, movieItem.id); // ✅ use TMDB id directly
+      setIsInWatchLater(false);
+      alert("Removed from Watch Later!");
+    } else {
+      await addToWatchLater(auth.currentUser.uid, movieItem);
+      setIsInWatchLater(true);
+      alert("Added to Watch Later!");
+    }
+  } catch (error) {
+    console.error("Error updating Watch Later:", error);
+    alert("An error occurred while updating Watch Later.");
+  }
+};
+
 
   return info ? (
     <div className="min-h-screen bg-black text-white w-full">
@@ -145,6 +197,18 @@ export default function Movie({ data }) {
                     <i className="ri-tv-line text-xl"></i>
                     Watch Live
                   </Link>
+
+                  {/* 👇 Toggle Watch Later button */}
+                  <button
+                    onClick={handleWatchLater}
+                    className={`group relative px-2 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center gap-3 ${isInWatchLater
+                        ? "bg-red-600/30 border-2 border-red-500 text-red-300 hover:bg-red-500 hover:text-white hover:shadow-lg hover:shadow-red-500/50"
+                        : "bg-purple-700/30 border-2 border-purple-500 text-purple-300 hover:bg-purple-500 hover:text-white hover:shadow-lg hover:shadow-purple-500/50"
+                      }`}
+                  >
+                    <i className={isInWatchLater ? "ri-bookmark-fill text-xl" : "ri-bookmark-line text-xl"}></i>
+                    {isInWatchLater ? "Remove from Watch Later" : "Add to Watch Later"}
+                  </button>
                 </div>
               </div>
             </div>

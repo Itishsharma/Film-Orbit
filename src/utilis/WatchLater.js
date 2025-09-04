@@ -1,61 +1,62 @@
-import { db, auth } from "./firebase"
-import { doc, setDoc, getDoc } from "firebase/firestore"
+// src/utilis/watchLater.js
+import { db } from "./firebase";
+import { collection, doc, setDoc, getDocs, deleteDoc } from "firebase/firestore";
 
 /**
- * ➕ Add a movie/show to Watch Later
+ * Add a movie/TV show to Watch Later
+ * @param {string} userUID
+ * @param {object} item
  */
-export const addToWatchLater = async (item) => {
-  if (!auth.currentUser) {
-    alert("You must be logged in to add to Watch Later")
-    return
+export const addToWatchLater = async (userUID, item) => {
+  if (!userUID) return;
+
+  try {
+    // Use TMDB id as docId for uniqueness
+    const itemRef = doc(db, "watchLater", userUID, "items", String(item.id));
+    await setDoc(itemRef, { ...item, id: item.id, type: item.type }, { merge: true });
+
+    console.log("✅ Added to Watch Later:", item);
+  } catch (error) {
+    console.error("❌ Error adding to Watch Later:", error);
   }
-
-  const userUID = auth.currentUser.uid
-  const docRef = doc(db, "watchLater", userUID)
-  const docSnap = await getDoc(docRef)
-
-  let watchList = []
-  if (docSnap.exists()) {
-    watchList = docSnap.data().list || []
-  }
-
-  // prevent duplicates
-  const exists = watchList.some((m) => m.id === item.id)
-  if (exists) return
-
-  watchList.push(item)
-  await setDoc(docRef, { list: watchList })
-}
+};
 
 /**
- * 📥 Get Watch Later list
+ * Remove a movie/TV show from Watch Later
+ * @param {string} userUID
+ * @param {string|number} itemId
  */
-export const getWatchLater = async () => {
-  if (!auth.currentUser) return []
+export const removeFromWatchLater = async (userUID, itemId) => {
+  if (!userUID) return;
 
-  const userUID = auth.currentUser.uid
-  const docRef = doc(db, "watchLater", userUID)
-  const docSnap = await getDoc(docRef)
+  try {
+    const itemRef = doc(db, "watchLater", userUID, "items", String(itemId));
+    await deleteDoc(itemRef);
 
-  if (docSnap.exists()) {
-    return docSnap.data().list || []
+    console.log("🗑️ Removed from Watch Later:", itemId);
+  } catch (error) {
+    console.error("❌ Error removing from Watch Later:", error);
   }
-  return []
-}
+};
 
 /**
- * ❌ Remove from Watch Later
+ * Get all Watch Later items for a user
+ * @param {string} userUID
  */
-export const removeFromWatchLater = async (id) => {
-  if (!auth.currentUser) return
+export const getWatchLater = async (userUID) => {
+  if (!userUID) return [];
 
-  const userUID = auth.currentUser.uid
-  const docRef = doc(db, "watchLater", userUID)
-  const docSnap = await getDoc(docRef)
+  try {
+    const colRef = collection(db, "watchLater", userUID, "items");
+    const snapshot = await getDocs(colRef);
 
-  if (docSnap.exists()) {
-    let watchList = docSnap.data().list || []
-    watchList = watchList.filter((m) => m.id !== id)
-    await setDoc(docRef, { list: watchList })
+    // Return array with docId included for easy removal later
+    return snapshot.docs.map((docSnap) => ({
+      ...docSnap.data(),
+      docId: docSnap.id,
+    }));
+  } catch (error) {
+    console.error("❌ Error fetching Watch Later:", error);
+    return [];
   }
-}
+};

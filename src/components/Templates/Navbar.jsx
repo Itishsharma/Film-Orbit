@@ -6,17 +6,25 @@ function Navbar() {
     <div className="w-[20%] h-full bg-gradient-to-br from-slate-900 via-purple-900 to-purple-900 p-6 backdrop-blur-xl shadow-2xl">
       {/* Logo Section */}
       <div className="mb-8">
-        <h1 className="text-2xl text-white font-bold flex items-center group">
-          <div className="mr-3">
-            <div className="w-9 h-9 flex items-center justify-center">
-              <img src="/src/assets/logo.png" alt="Logo" className="w-9 h-9 object-contain" />
+        <h1 className="text-3xl font-extrabold flex items-center">
+          {/* Bigger logo with less margin */}
+          <div className="mr-0">
+            <div className="w-22 h-22 flex items-center justify-center">
+              <img
+                src="/src/assets/icon1.png"
+                alt="Logo"
+                className="w-20 h-20 object-contain"
+              />
             </div>
           </div>
-          <span className="bg-gradient-to-r from-purple-200 to-purple-400 bg-clip-text text-transparent">
+
+          {/* Gradient text */}
+          <span className="bg-gradient-to-r from-purple-200 via-purple-400 to-purple-600 bg-clip-text text-transparent drop-shadow-md">
             Film Orbit
           </span>
         </h1>
       </div>
+
 
       {/* Navigation Section */}
       <nav className="space-y-2">
@@ -77,7 +85,7 @@ function Navbar() {
               </div>
               <span className="font-medium">TV Shows</span>
             </NavLink>
- 
+
 
             <NavLink
               to="/random"
