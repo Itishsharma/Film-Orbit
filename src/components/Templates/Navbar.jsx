@@ -15,7 +15,7 @@ function Navbar() {
           <div className="mr-0">
             <div className="w-22 h-22 flex items-center justify-center">
               <img
-                src="/src/assets/icon1.png"
+                src="/icon1.png"
                 alt="Logo"
                 className="w-20 h-20 object-contain"
               />
