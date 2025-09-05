@@ -7,8 +7,8 @@ import { Link, Outlet, useLocation, useNavigate, useParams } from "react-router-
 import { removemovie } from "../Redux/Movieslice.jsx";
 import Loader from "../Loader"
 import HorizontalCard from "../HorizontalCard"
-import { auth } from "../../utilis/firebase";
-import { addToWatchLater, getWatchLater, removeFromWatchLater } from "../../utilis/watchLater";
+import { auth } from "../../utilis/firebase.js";
+import { addToWatchLater, getWatchLater, removeFromWatchLater } from "../../utilis/watchLater.js";
 
 
 export default function Movie({ data }) {
