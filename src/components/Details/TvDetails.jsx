@@ -8,7 +8,7 @@ import { removemovie } from "../Redux/Tvslice.jsx"
 import Loader from "../Loader"
 import HorizontalCard from "../HorizontalCard"
 import { auth } from "../../utilis/firebase"
-import { addToWatchLater, getWatchLater, removeFromWatchLater } from "../../utilis/watchLater";
+import { addToWatchLater, getWatchLater, removeFromWatchLater } from "../../utilis/watchLater.js";
 
 
 function TvDetails() {
