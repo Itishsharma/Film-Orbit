@@ -1,6 +1,4 @@
-"use client"
-
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom" 
 import { useState, useRef, useEffect } from "react"
 
 function Card({ data, title }) {

@@ -1,5 +1,4 @@
-"use client"
-import ReactPlayer from "react-player"
+import ReactPlayer from "react-player" 
 import { useSelector } from "react-redux"
 import { useLocation, useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"

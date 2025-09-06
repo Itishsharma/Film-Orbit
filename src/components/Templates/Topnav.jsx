@@ -1,6 +1,4 @@
-"use client"
-
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react" 
 import { Link, useLocation } from "react-router-dom"
 import axios from "../../utilis/Axios"
 import noimg from "/noimg.jpg"
@@ -21,14 +19,25 @@ function Topnav() {
     location.pathname.startsWith("/tv")
 
   const getSearch = async () => {
-    try {
-      const { data } = await axios.get(`/search/multi?query=${query}`)
-      const filteredResults = data.results.filter((item) => item.media_type === "movie" || item.media_type === "tv")
-      setSearches(filteredResults)
-    } catch (err) {
-      console.log(err)
-    }
+  try {
+    const { data } = await axios.get(`/search/multi?query=${query}`)
+    const filteredResults = data.results.filter(
+      (item) => item.media_type === "movie" || item.media_type === "tv"
+    )
+
+    // 🔹 Sort by release date (newest first)
+    const sortedResults = filteredResults.sort((a, b) => {
+      const dateA = new Date(a.release_date || a.first_air_date || 0)
+      const dateB = new Date(b.release_date || b.first_air_date || 0)
+      return dateB - dateA
+    })
+
+    setSearches(sortedResults) // 🔹 Use sorted results
+  } catch (err) {
+    console.log(err)
   }
+}
+
 
   const getPopularContent = async () => {
     try {
@@ -189,7 +198,7 @@ function Topnav() {
                     ))}
                   </>
                 ) : searches.length > 0 ? (
-                  searches.slice(0, 8).map((item, index) => (
+                  searches.map((item, index) => (
                     <Link
                       to={`/${item.media_type}/details/${item.id}`}
                       key={index}

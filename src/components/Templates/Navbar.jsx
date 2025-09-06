@@ -1,5 +1,4 @@
-"use client"
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom" 
 
 function Navbar() {
   return (
@@ -10,8 +9,7 @@ function Navbar() {
     >
       {/* Logo Section */}
       <div className="mb-8">
-        <h1 className="text-3xl font-extrabold flex items-center">
-          {/* Bigger logo with less margin */}
+        <h1 className="text-3xl font-extrabold flex items-center"> 
           <div className="mr-0">
             <div className="w-22 h-22 flex items-center justify-center">
               <img

@@ -1,5 +1,4 @@
-"use client"
-import { useState, useRef } from "react"
+import { useState, useRef } from "react" 
 import axios from "axios"
 
 const MOVIE_GENRES = [
